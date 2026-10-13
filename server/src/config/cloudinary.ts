@@ -7,6 +7,7 @@ if (env.cloudinaryCloudName && env.cloudinaryApiKey && env.cloudinaryApiSecret) 
     api_key: env.cloudinaryApiKey,
     api_secret: env.cloudinaryApiSecret,
   });
+  console.log(`[cloudinary] Configured with cloud_name: ${env.cloudinaryCloudName}`);
 }
 
 export { cloudinary };

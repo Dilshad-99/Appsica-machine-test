@@ -97,6 +97,7 @@ export const TeamMembersPage: React.FC = () => {
         role: 'Admin' | 'Member';
         boards: string[];
         boardIds: string[];
+        inviteStatus?: 'active' | 'pending';
       }
     >();
 
@@ -110,8 +111,9 @@ export const TeamMembersPage: React.FC = () => {
           email: m.email || '',
           avatar: m.avatar,
           role: m.role || 'Member',
-          boards: m.boards || [],
-          boardIds: m.boardIds || [],
+          boards: Array.isArray(m.boards) ? [...m.boards] : [],
+          boardIds: Array.isArray(m.boardIds) ? [...m.boardIds] : [],
+          inviteStatus: m.inviteStatus || 'active',
         });
       });
     }
@@ -128,8 +130,8 @@ export const TeamMembersPage: React.FC = () => {
         if (map.has(ownerId)) {
           const existing = map.get(ownerId)!;
           existing.role = 'Admin';
-          if (!existing.boards.includes(bTitle)) existing.boards.push(bTitle);
-          if (!existing.boardIds.includes(bId)) existing.boardIds.push(bId);
+          if (!existing.boards.includes(bTitle)) existing.boards = [...existing.boards, bTitle];
+          if (!existing.boardIds.includes(bId)) existing.boardIds = [...existing.boardIds, bId];
         } else {
           map.set(ownerId, {
             id: ownerId,
@@ -158,8 +160,8 @@ export const TeamMembersPage: React.FC = () => {
           if (map.has(memberId)) {
             const existing = map.get(memberId)!;
             if (isOwnerOfAny) existing.role = 'Admin';
-            if (!existing.boards.includes(bTitle)) existing.boards.push(bTitle);
-            if (!existing.boardIds.includes(bId)) existing.boardIds.push(bId);
+            if (!existing.boards.includes(bTitle)) existing.boards = [...existing.boards, bTitle];
+            if (!existing.boardIds.includes(bId)) existing.boardIds = [...existing.boardIds, bId];
           } else {
             map.set(memberId, {
               id: memberId,
@@ -252,7 +254,9 @@ export const TeamMembersPage: React.FC = () => {
   };
 
   const adminCount = memberList.filter((m) => m.role.toLowerCase() === 'admin').length;
-  const standardCount = memberList.filter((m) => m.role.toLowerCase() === 'member').length;
+  const standardCount = memberList.filter(
+    (m) => m.role.toLowerCase() === 'member' && m.inviteStatus !== 'pending'
+  ).length;
   const isRefreshing = isFetchingMembers;
 
   return (
@@ -468,7 +472,12 @@ export const TeamMembersPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {member.role === 'Admin' ? (
+                  {member.inviteStatus === 'pending' ? (
+                    <span className="text-[10px] font-bold bg-[color-mix(in_srgb,var(--warning)_16%,transparent)] text-warning px-2 py-0.5 rounded-full border border-[color-mix(in_srgb,var(--warning)_30%,transparent)] flex items-center space-x-1 shrink-0">
+                      <Mail className="w-3 h-3" />
+                      <span>Invited</span>
+                    </span>
+                  ) : member.role === 'Admin' ? (
                     <span className="text-[10px] font-bold bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] text-accent px-2 py-0.5 rounded-full border border-[color-mix(in_srgb,var(--accent)_30%,transparent)] flex items-center space-x-1 shrink-0">
                       <Shield className="w-3 h-3" />
                       <span>Admin</span>
@@ -491,7 +500,7 @@ export const TeamMembersPage: React.FC = () => {
                   </div>
 
                   <span className="text-[10px] font-semibold text-faint shrink-0">
-                    Active
+                    {member.inviteStatus === 'pending' ? 'Pending' : 'Active'}
                   </span>
                 </div>
               </div>

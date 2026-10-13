@@ -7,9 +7,54 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root,
+[data-theme="gold"] {
+  color-scheme: light;
+  --bg: #F5F6F8;
+  --hero-bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --card-hover: #F8F9FA;
+  --border: #E3E6EB;
+  --border-strong: #D1D5DB;
+  --text-1: #191919;
+  --text-2: #4B5563;
+  --text-faint: #6B7280;
+  --accent: #D9AF32;
+  --accent-2: #E5C358;
+  --on-accent: #191919;
+  --success: #16A34A;
+  --live-badge: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
+  --glow: rgba(217, 175, 50, 0.28);
+  --glow-2: rgba(217, 175, 50, 0.16);
+  --grad-accent: linear-gradient(135deg, #D9AF32, #EAB308);
+  --grad-blue: linear-gradient(135deg, #0284C7, #2563EB);
+  --grad-green: linear-gradient(135deg, #059669, #16A34A);
+  --grad-rose: linear-gradient(135deg, #DB2777, #E11D48);
+  --glass: rgba(255, 255, 255, 0.92);
+  --input-bg: #FFFFFF;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.09), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --ambience:
+    radial-gradient(
+      1100px 520px at 88% -12%,
+      rgba(217, 175, 50, 0.06),
+      transparent 62%
+    ),
+    radial-gradient(
+      900px 480px at -12% 18%,
+      rgba(217, 175, 50, 0.04),
+      transparent 58%
+    );
+}
+
 [data-theme="obsidian"] {
   color-scheme: dark;
   --bg: #09090b;
+  --hero-bg: #09090b;
   --surface: #111113;
   --card: #18181b;
   --card-hover: #202024;
@@ -22,6 +67,7 @@
   --accent-2: #a855f7;
   --on-accent: #ffffff;
   --success: #22c55e;
+  --live-badge: #16A34A;
   --warning: #f59e0b;
   --danger: #ef4444;
   --glow: rgba(139, 92, 246, 0.22);
@@ -196,6 +242,7 @@
 @theme inline {
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --color-page: var(--bg);
+  --color-hero: var(--hero-bg);
   --color-surface: var(--surface);
   --color-card: var(--card);
   --color-card-hover: var(--card-hover);
@@ -207,6 +254,7 @@
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-success: var(--success);
+  --color-live: var(--live-badge);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --shadow-sm: var(--shadow-sm);
@@ -405,10 +453,12 @@
   }
 
   .btn-primary {
+    background-color: var(--accent);
     background-image: var(--grad-accent);
     color: var(--on-accent);
-    font-weight: 600;
+    font-weight: 700;
     box-shadow: 0 8px 24px -6px var(--glow);
+    border: 1px solid color-mix(in srgb, var(--accent) 75%, rgba(0, 0, 0, 0.12));
   }
   .btn-primary:hover {
     transform: translateY(-1px);
@@ -485,8 +535,8 @@
     background-color 0.2s ease;
 }
 .input::placeholder {
-  color: #cbd5e1;
-  opacity: 0.9;
+  color: var(--text-faint);
+  opacity: 0.75;
 }
 .input:focus {
   outline: none;
@@ -535,32 +585,32 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  background: color-mix(in srgb, var(--text-2) 16%, transparent);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--text-2) 12%, transparent);
+  color: var(--text-2);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid color-mix(in srgb, var(--text-2) 24%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-2) 22%, transparent);
 }
 
 .badge-success {
-  background: color-mix(in srgb, var(--success) 18%, transparent);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--success);
   border-color: color-mix(in srgb, var(--success) 35%, transparent);
 }
 .badge-warning {
-  background: color-mix(in srgb, var(--warning) 18%, transparent);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--warning) 14%, transparent);
+  color: var(--warning);
   border-color: color-mix(in srgb, var(--warning) 35%, transparent);
 }
 .badge-danger {
-  background: color-mix(in srgb, var(--danger) 18%, transparent);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
   border-color: color-mix(in srgb, var(--danger) 35%, transparent);
 }
 .badge-accent {
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: #ffffff;
-  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--on-accent, #ffffff);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .chip {
@@ -571,9 +621,9 @@
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-1);
+  background: color-mix(in srgb, var(--text-2) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-2) 20%, transparent);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -582,14 +632,14 @@
     transform 0.15s ease;
 }
 .chip:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--text-1);
+  background: color-mix(in srgb, var(--text-2) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 .chip-active {
-  background: color-mix(in srgb, var(--accent) 30%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  color: var(--text-1);
 }
 
 .avatar {
@@ -646,14 +696,14 @@
   border-radius: 999px;
   font-size: 11px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-1);
   background: color-mix(
     in srgb,
-    var(--col, var(--accent)) 30%,
-    rgba(255, 255, 255, 0.15)
+    var(--col, var(--accent)) 16%,
+    var(--card)
   );
   border: 1px solid
-    color-mix(in srgb, var(--col, var(--accent)) 60%, rgba(255, 255, 255, 0.25));
+    color-mix(in srgb, var(--col, var(--accent)) 35%, var(--border));
 }
 
 .column-grip {
@@ -674,7 +724,7 @@
    Priority system
    ═══════════════════════════════════════════════════════════════ */
 .prio-badge {
-  --prio: #94a3b8;
+  --prio: #64748b;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -684,9 +734,9 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff;
-  background: color-mix(in srgb, var(--prio) 28%, transparent);
-  border: 1px solid color-mix(in srgb, var(--prio) 55%, transparent);
+  color: var(--prio);
+  background: color-mix(in srgb, var(--prio) 12%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--prio) 30%, var(--border));
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }

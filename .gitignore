@@ -1,2 +1,9 @@
-
+node_modules/
+dist/
+.env
+.env.*
+*.local
+.DS_Store
 IMPLEMENTATION_PLAN.md
+server/progress-check.ts
+server/progress-check2.ts

@@ -4,7 +4,7 @@ export interface INotification {
   _id?: Types.ObjectId;
   recipient: Types.ObjectId;
   sender: Types.ObjectId;
-  type: "BOARD_INVITATION" | "TASK_MENTION";
+  type: "BOARD_INVITATION" | "TASK_MENTION" | "TASK_ASSIGNED";
   title: string;
   message: string;
   board?: Types.ObjectId;
@@ -21,7 +21,7 @@ const notificationSchema = new Schema<INotification>(
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
     type: {
       type: String,
-      enum: ["BOARD_INVITATION", "TASK_MENTION"],
+      enum: ["BOARD_INVITATION", "TASK_MENTION", "TASK_ASSIGNED"],
       required: true,
     },
     title: { type: String, required: true },

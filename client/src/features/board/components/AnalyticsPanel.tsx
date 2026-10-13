@@ -33,17 +33,30 @@ export const AnalyticsPanel: React.FC<AnalyticsPanelProps> = ({
   const mediumPriority = tasks.filter((t) => t.priority === "medium").length;
   const lowPriority = tasks.filter((t) => t.priority === "low").length;
 
-  const doneColumn = columns.find(
-    (c) =>
-      c.name.toLowerCase().includes("done") ||
-      c.name.toLowerCase().includes("completed"),
-  );
-  const doneTasksCount = doneColumn
-    ? tasks.filter((t) => t.columnId === doneColumn._id).length
-    : 0;
+  const doneColumnIds = columns
+    .filter(
+      (c) =>
+        c.name.toLowerCase().includes("done") ||
+        c.name.toLowerCase().includes("completed"),
+    )
+    .map((c) => c._id);
+  const progressedColumnIds = columns
+    .filter((c) => {
+      const n = c.name.toLowerCase();
+      return n.includes("progress") || n.includes("doing") || n.includes("review");
+    })
+    .map((c) => c._id);
+
+  const doneTasksCount = tasks.filter((t) => doneColumnIds.includes(t.columnId)).length;
+  const inProgressTasksCount = tasks.filter((t) =>
+    progressedColumnIds.includes(t.columnId),
+  ).length;
+  const todoTasksCount = Math.max(0, totalTasks - doneTasksCount - inProgressTasksCount);
 
   const completionRate =
     totalTasks > 0 ? Math.round((doneTasksCount / totalTasks) * 100) : 0;
+  const inProgressRate =
+    totalTasks > 0 ? Math.round((inProgressTasksCount / totalTasks) * 100) : 0;
 
   const statCard = (
     icon: React.ReactNode,
@@ -111,16 +124,49 @@ export const AnalyticsPanel: React.FC<AnalyticsPanelProps> = ({
             </span>
           </div>
           <div
-            className="w-full h-3 rounded-full overflow-hidden"
+            className="w-full h-3 rounded-full overflow-hidden flex"
             style={{ background: "var(--input-bg)" }}
           >
             <div
-              className="grad-accent h-full rounded-full transition-all duration-500"
+              className="grad-accent h-full rounded-l-full transition-all duration-500"
               style={{
                 width: `${completionRate}%`,
                 boxShadow: "0 0 12px var(--glow)",
               }}
             />
+            <div
+              className="h-full transition-all duration-500"
+              style={{
+                width: `${inProgressRate}%`,
+                background: "var(--warning)",
+                opacity: 0.85,
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-4 mt-2.5 text-[11px] font-semibold text-mute flex-wrap">
+            <span className="flex items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-full grad-accent inline-block"
+                aria-hidden
+              />
+              Done ({doneTasksCount})
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-full inline-block"
+                style={{ background: "var(--warning)" }}
+                aria-hidden
+              />
+              In Progress ({inProgressTasksCount})
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-full inline-block"
+                style={{ background: "color-mix(in srgb, var(--text-2) 30%, transparent)" }}
+                aria-hidden
+              />
+              To Do ({todoTasksCount})
+            </span>
           </div>
         </div>
 
@@ -136,6 +182,18 @@ export const AnalyticsPanel: React.FC<AnalyticsPanelProps> = ({
             "var(--success)",
             "Completed",
             doneTasksCount,
+          )}
+          {statCard(
+            <Clock className="w-5 h-5" />,
+            "var(--warning)",
+            "In Progress",
+            inProgressTasksCount,
+          )}
+          {statCard(
+            <Layers className="w-5 h-5" />,
+            "var(--text-2)",
+            "To Do",
+            todoTasksCount,
           )}
         </div>
 

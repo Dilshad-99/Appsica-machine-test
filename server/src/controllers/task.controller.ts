@@ -65,6 +65,36 @@ const handleTaskMentions = async (task: any, description?: string, senderUser?: 
   }
 };
 
+const handleTaskAssignments = async (
+  task: any,
+  assigneeIds: string[],
+  senderUser?: any
+) => {
+  if (!assigneeIds.length || !senderUser) return;
+
+  for (const assigneeId of assigneeIds) {
+    if (String(assigneeId) === String(senderUser._id)) continue;
+
+    const notif = await Notification.create({
+      recipient: new Types.ObjectId(assigneeId),
+      sender: senderUser._id,
+      type: "TASK_ASSIGNED",
+      title: "You were assigned a task",
+      message: `${senderUser.name} assigned you to task "${task.title}"`,
+      board: task.board,
+      task: task._id,
+    });
+
+    await notif.populate([
+      { path: "sender", select: "name email avatar" },
+      { path: "board", select: "name title description" },
+      { path: "task", select: "title" },
+    ]);
+
+    io.to(`user:${assigneeId}`).emit("notification:new", notif);
+  }
+};
+
 export const getBoardTasks = asyncHandler(async (req: Request, res: Response) => {
   const { boardId } = req.params;
 
@@ -155,6 +185,11 @@ export const createTask = asyncHandler(async (req: Request, res: Response) => {
 
   await handleTaskMentions(task, req.body.description, req.user);
 
+  const assignedIds = Array.isArray(req.body.assignees)
+    ? req.body.assignees.map((a: any) => String(a))
+    : [];
+  await handleTaskAssignments(task, assignedIds, req.user);
+
   await ActivityService.log(
     req.user!._id,
     boardId,
@@ -213,6 +248,8 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
     priority?: "low" | "medium" | "high" | "critical";
   };
 
+  const previousAssigneeIds = task.assignees.map((a) => String(a));
+
   const changedFields: string[] = [];
   if (title !== undefined && title !== task.title) {
     task.title = title;
@@ -245,6 +282,13 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
 
   if (description) {
     await handleTaskMentions(task, description, req.user);
+  }
+
+  if (assignees !== undefined) {
+    const newlyAssigned = assignees
+      .map((a) => String(a))
+      .filter((id) => !previousAssigneeIds.includes(id));
+    await handleTaskAssignments(task, newlyAssigned, req.user);
   }
 
   await ActivityService.log(

@@ -32,7 +32,7 @@ const CARDS: {
   {
     icon: Workflow,
     title: 'Flexible Workflows',
-    text: 'Kanban, lists, and custom stages. Shape TaskFlow around the way your team actually works.',
+    text: 'Kanban, lists, and custom stages. Shape TeamlyFy around the way your team actually works.',
     glow: 'var(--accent)',
   },
   {
@@ -62,7 +62,7 @@ export function WhyTaskFlow() {
 
       <div className="relative z-10 mx-auto max-w-[1240px] px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Why TaskFlow"
+          eyebrow="Why TeamlyFy"
           title={
             <>
               Designed for teams that

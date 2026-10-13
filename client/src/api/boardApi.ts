@@ -62,6 +62,7 @@ export interface WorkspaceMember {
   role: 'Admin' | 'Member';
   boards: string[];
   boardIds: string[];
+  inviteStatus?: 'active' | 'pending';
 }
 
 export interface WorkspaceMembersResponse {

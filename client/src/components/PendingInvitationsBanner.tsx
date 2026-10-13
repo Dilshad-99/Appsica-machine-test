@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   useGetPendingInvitationsQuery,
   useRespondInvitationMutation,
@@ -9,16 +9,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const PendingInvitationsBanner: React.FC = () => {
   const { data, isLoading } = useGetPendingInvitationsQuery();
   const [respondInvitation, { isLoading: isResponding }] = useRespondInvitationMutation();
+  const [respondError, setRespondError] = useState('');
 
   const invitations = data?.data || [];
 
   if (isLoading || invitations.length === 0) return null;
 
   const handleRespond = async (invitationId: string, action: 'accept' | 'decline') => {
+    setRespondError('');
     try {
       await respondInvitation({ invitationId, action }).unwrap();
     } catch (err: any) {
-      alert(err.data?.message || 'Failed to respond to invitation');
+      setRespondError(err.data?.message || 'Failed to respond to invitation');
     }
   };
 
@@ -81,6 +83,14 @@ export const PendingInvitationsBanner: React.FC = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {respondError && (
+        <div className="max-w-7xl mx-auto mt-2 text-center">
+          <span className="inline-block text-[11px] font-medium text-rose-500 bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 rounded-lg">
+            {respondError}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

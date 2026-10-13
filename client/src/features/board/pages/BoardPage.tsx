@@ -20,7 +20,7 @@ export const BoardPage: React.FC = () => {
   const { data: boardData, isLoading: isBoardLoading, error: boardError } = useGetBoardByIdQuery(boardId!);
   const { data: tasksData, isLoading: isTasksLoading } = useGetBoardTasksQuery(boardId!);
 
-  const { searchQuery, priorityFilter, assigneeFilter, activeTaskId, isActivityOpen, isAnalyticsOpen } =
+  const { searchQuery, priorityFilter, assigneeFilter, dueDateFilter, activeTaskId, isActivityOpen, isAnalyticsOpen } =
     useAppSelector((state) => state.board);
 
   const currentUser = useAppSelector((state) => state.auth.user);
@@ -72,6 +72,13 @@ export const BoardPage: React.FC = () => {
   const board = boardData.data;
   const rawTasks = tasksData?.data || [];
 
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const endOfToday = new Date(startOfToday);
+  endOfToday.setDate(endOfToday.getDate() + 1);
+  const endOfWeek = new Date(startOfToday);
+  endOfWeek.setDate(endOfWeek.getDate() + 7);
+
   const filteredTasks = rawTasks.filter((task) => {
     const matchesSearch =
       searchQuery === '' ||
@@ -85,7 +92,23 @@ export const BoardPage: React.FC = () => {
       (task.assignees &&
         task.assignees.some((a) => (typeof a === 'string' ? a === assigneeFilter : a._id === assigneeFilter)));
 
-    return matchesSearch && matchesPriority && matchesAssignee;
+    let matchesDueDate = true;
+    if (dueDateFilter !== 'all') {
+      if (!task.dueDate) {
+        matchesDueDate = false;
+      } else {
+        const due = new Date(task.dueDate);
+        if (dueDateFilter === 'overdue') {
+          matchesDueDate = due < startOfToday;
+        } else if (dueDateFilter === 'today') {
+          matchesDueDate = due >= startOfToday && due < endOfToday;
+        } else if (dueDateFilter === 'week') {
+          matchesDueDate = due >= startOfToday && due < endOfWeek;
+        }
+      }
+    }
+
+    return matchesSearch && matchesPriority && matchesAssignee && matchesDueDate;
   });
 
   const activeTask = rawTasks.find((t) => t._id === activeTaskId);

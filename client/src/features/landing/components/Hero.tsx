@@ -40,22 +40,22 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-svh items-center overflow-hidden pb-24 pt-36 lg:pt-40"
+      className="relative flex min-h-svh items-center overflow-hidden pb-24 pt-40 lg:pt-48 bg-[var(--hero-bg,#FFFFFF)] border-b border-edge"
     >
       {/* backdrop layers */}
-      <div className="lp-grid-bg absolute inset-0" />
+      <div className="lp-grid-bg absolute inset-0 opacity-60" />
       <div
         className="lp-blob -top-32 right-[-10%] h-[560px] w-[560px]"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in srgb, var(--accent) 26%, transparent), transparent 65%)',
+            'radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent), transparent 65%)',
         }}
       />
       <div
         className="lp-blob bottom-[-20%] left-[-12%] h-[480px] w-[480px]"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 65%)',
+            'radial-gradient(circle, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 65%)',
         }}
       />
       <div className="lp-noise" />
@@ -64,14 +64,20 @@ export function Hero() {
         {/* ——— copy ——— */}
         <motion.div variants={container} initial="hidden" animate="show" style={{ y: textY }}>
           <motion.div variants={item}>
-            <span className="lp-glass inline-flex items-center gap-2.5 rounded-full px-4 py-2">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="lp-ping absolute inline-flex h-full w-full rounded-full bg-accent" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="lp-glass inline-flex items-center gap-2.5 rounded-full px-4 py-2 border border-edge shadow-xs bg-white/95">
+              <span className="relative flex h-2 w-2">
+                <span
+                  className="lp-ping absolute inline-flex h-full w-full rounded-full"
+                  style={{ backgroundColor: 'var(--live-badge, #16A34A)' }}
+                />
+                <span
+                  className="relative inline-flex h-2 w-2 rounded-full"
+                  style={{ backgroundColor: 'var(--live-badge, #16A34A)' }}
+                />
               </span>
               <Sparkles className="h-3.5 w-3.5" style={{ color: 'var(--accent)' }} />
               <span className="text-[12.5px] font-semibold tracking-wide text-ink">
-                Modern Project Management
+                LIVE COLLABORATIVE WORKSPACE
               </span>
             </span>
           </motion.div>
@@ -91,14 +97,14 @@ export function Hero() {
             variants={item}
             className="mt-7 max-w-lg text-[17px] leading-relaxed text-mute sm:text-lg"
           >
-            TaskFlow brings tasks, teams, discussions, and workflows into one
+            TeamlyFy brings tasks, teams, discussions, and workflows into one
             beautifully designed workspace.
           </motion.p>
 
           <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               to="/register"
-              className="btn btn-primary h-13 rounded-full px-8 py-4 text-[15px] font-semibold"
+              className="btn btn-primary h-13 rounded-full px-8 py-4 text-[15px] font-bold tracking-tight shadow-md"
             >
               Start Free
               <ArrowRight className="h-4 w-4" />

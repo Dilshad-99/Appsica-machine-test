@@ -10,6 +10,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Home,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -98,7 +99,7 @@ export const LeftSidebar: React.FC = () => {
               <button
                 type="button"
                 onClick={toggleCollapsed}
-                className="w-10 h-10 rounded-xl bg-surface hover:bg-white/10 border border-edge text-slate-200 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs hover:border-purple-400 group"
+                className="w-10 h-10 rounded-xl bg-surface hover:bg-card-hover border border-edge text-mute hover:text-ink flex items-center justify-center transition-all cursor-pointer shadow-xs hover:border-accent group"
                 title="Expand sidebar"
                 aria-label="Expand sidebar"
               >
@@ -109,7 +110,7 @@ export const LeftSidebar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsCreateModalOpen(true)}
-                className="w-10 h-10 rounded-xl bg-surface hover:bg-white/10 border border-edge text-slate-200 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs hover:border-purple-400 group"
+                className="w-10 h-10 rounded-xl bg-surface hover:bg-card-hover border border-edge text-mute hover:text-ink flex items-center justify-center transition-all cursor-pointer shadow-xs hover:border-accent group"
                 title="Create New Project"
                 aria-label="Create New Project"
               >
@@ -119,14 +120,14 @@ export const LeftSidebar: React.FC = () => {
           ) : (
             <div className="glass-card rounded-2xl p-3.5 border border-edge shadow-sm">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-bold tracking-wider text-slate-300 uppercase">
+                <span className="text-[10px] font-bold tracking-wider text-faint uppercase">
                   CURRENT PROJECT
                 </span>
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="w-6 h-6 rounded-md hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-6 h-6 rounded-md hover:bg-card-hover text-mute hover:text-ink flex items-center justify-center transition-colors cursor-pointer"
                     title="Create New Project"
                     aria-label="Create New Project"
                   >
@@ -135,7 +136,7 @@ export const LeftSidebar: React.FC = () => {
                   <button
                     type="button"
                     onClick={toggleCollapsed}
-                    className="w-6 h-6 rounded-md hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-6 h-6 rounded-md hover:bg-card-hover text-mute hover:text-ink flex items-center justify-center transition-colors cursor-pointer"
                     title="Collapse sidebar"
                     aria-label="Collapse sidebar"
                   >
@@ -144,11 +145,11 @@ export const LeftSidebar: React.FC = () => {
                 </div>
               </div>
 
-              <h2 className="text-base font-bold text-white tracking-tight leading-snug truncate" title={currentProjectName}>
+              <h2 className="text-base font-bold text-ink tracking-tight leading-snug truncate" title={currentProjectName}>
                 {currentProjectName}
               </h2>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <span className={`text-xs font-semibold ${isUserAdmin ? 'text-purple-300' : 'text-blue-300'}`}>
+                <span className={`text-xs font-semibold ${isUserAdmin ? 'text-accent' : 'text-blue-600 dark:text-blue-400'}`}>
                   Role: {isUserAdmin ? 'admin' : 'member'}
                 </span>
               </div>
@@ -167,13 +168,13 @@ export const LeftSidebar: React.FC = () => {
                 : 'w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm'
             } ${
               isDashboardActive
-                ? 'bg-purple-600/35 text-white border border-purple-500/60 shadow-sm font-bold'
-                : 'text-slate-200 hover:text-white hover:bg-white/10 border border-transparent font-medium'
+                ? 'bg-accent/15 text-ink border border-accent/40 shadow-xs font-bold'
+                : 'text-mute hover:text-ink hover:bg-card-hover border border-transparent font-medium'
             }`}
             title="Dashboard"
           >
             <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <LayoutDashboard className={`w-4 h-4 ${isDashboardActive ? 'text-white' : 'text-slate-200 group-hover:text-white'}`} />
+              <LayoutDashboard className={`w-4 h-4 ${isDashboardActive ? 'text-accent' : 'text-mute group-hover:text-ink'}`} />
             </div>
             {!isCollapsed && <span className="truncate">Dashboard</span>}
           </Link>
@@ -187,13 +188,13 @@ export const LeftSidebar: React.FC = () => {
                 : 'w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm'
             } ${
               isProjectsActive && !isDashboardActive
-                ? 'bg-purple-600/35 text-white border border-purple-500/60 shadow-sm font-bold'
-                : 'text-slate-200 hover:text-white hover:bg-white/10 border border-transparent font-medium'
+                ? 'bg-accent/15 text-ink border border-accent/40 shadow-xs font-bold'
+                : 'text-mute hover:text-ink hover:bg-card-hover border border-transparent font-medium'
             }`}
             title="Projects & Tasks"
           >
             <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <FolderKanban className={`w-4 h-4 ${isProjectsActive && !isDashboardActive ? 'text-white' : 'text-slate-200 group-hover:text-white'}`} />
+              <FolderKanban className={`w-4 h-4 ${isProjectsActive && !isDashboardActive ? 'text-accent' : 'text-mute group-hover:text-ink'}`} />
             </div>
             {!isCollapsed && <span className="truncate">Projects & Tasks</span>}
           </Link>
@@ -207,16 +208,34 @@ export const LeftSidebar: React.FC = () => {
                 : 'w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm'
             } ${
               isTeamActive
-                ? 'bg-purple-600/35 text-white border border-purple-500/60 shadow-sm font-bold'
-                : 'text-slate-200 hover:text-white hover:bg-white/10 border border-transparent font-medium'
+                ? 'bg-accent/15 text-ink border border-accent/40 shadow-xs font-bold'
+                : 'text-mute hover:text-ink hover:bg-card-hover border border-transparent font-medium'
             }`}
             title="Team Members"
           >
             <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <Users className={`w-4 h-4 ${isTeamActive ? 'text-white' : 'text-slate-200 group-hover:text-white'}`} />
+              <Users className={`w-4 h-4 ${isTeamActive ? 'text-accent' : 'text-mute group-hover:text-ink'}`} />
             </div>
             {!isCollapsed && <span className="truncate">Team Members</span>}
           </Link>
+
+          {/* 4. Landing Page Link */}
+          <div className="pt-2 mt-2 border-t border-edge">
+            <Link
+              to="/"
+              className={`transition-all group flex items-center ${
+                isCollapsed
+                  ? 'w-10 h-10 justify-center rounded-xl'
+                  : 'w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm'
+              } text-mute hover:text-ink hover:bg-card-hover border border-transparent font-medium`}
+              title="Back to Landing Page"
+            >
+              <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                <Home className="w-4 h-4 text-mute group-hover:text-accent transition-colors" />
+              </div>
+              {!isCollapsed && <span className="truncate">Landing Page</span>}
+            </Link>
+          </div>
         </nav>
 
         {/* Sidebar Footer with collapse/expand button */}
@@ -225,7 +244,7 @@ export const LeftSidebar: React.FC = () => {
             <button
               type="button"
               onClick={toggleCollapsed}
-              className="w-10 h-10 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer border border-transparent hover:border-edge"
+              className="w-10 h-10 rounded-xl text-mute hover:text-ink hover:bg-card-hover flex items-center justify-center transition-colors cursor-pointer border border-transparent hover:border-edge"
               title="Expand sidebar"
               aria-label="Expand sidebar"
             >
@@ -235,7 +254,7 @@ export const LeftSidebar: React.FC = () => {
             <button
               type="button"
               onClick={toggleCollapsed}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-mute hover:text-ink rounded-xl hover:bg-card-hover transition-colors cursor-pointer"
               title="Collapse sidebar"
               aria-label="Collapse sidebar"
             >

@@ -190,7 +190,7 @@ export const InvitePopupModal: React.FC = () => {
                 <span className="text-xs font-bold text-ink block truncate max-w-[180px]">
                   {inviteName || 'Project Workspace'}
                 </span>
-                <span className="text-[10px] text-mute block">TaskFlow Collaborative Board</span>
+                <span className="text-[10px] text-mute block">TeamlyFy Collaborative Board</span>
               </div>
             </div>
 

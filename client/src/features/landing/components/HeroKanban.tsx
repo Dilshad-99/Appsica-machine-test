@@ -28,9 +28,9 @@ interface KbTask {
 }
 
 const COLORS: Record<ColId, string> = {
-  todo: '#8b5cf6',
-  inprogress: '#f59e0b',
-  done: '#22c55e',
+  todo: '#D9AF32',
+  inprogress: '#3b82f6',
+  done: '#16A34A',
 };
 
 const COL_LABELS: Record<ColId, string> = {
@@ -410,9 +410,9 @@ export function HeroKanban() {
                 <span
                   className="rounded-full px-3 py-1.5 text-[9.5px] font-bold"
                   style={{
-                    background: 'linear-gradient(135deg,#8b5cf6,#a855f7)',
-                    color: '#fff',
-                    boxShadow: '0 4px 14px -4px rgba(139,92,246,0.55)',
+                    background: 'var(--grad-accent)',
+                    color: 'var(--on-accent)',
+                    boxShadow: '0 4px 14px -4px var(--glow)',
                   }}
                 >
                   Share

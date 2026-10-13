@@ -67,7 +67,7 @@ export function ProductShowcase() {
               <br className="hidden sm:block" /> <span className="lp-text-gradient">Zero context switching.</span>
             </>
           }
-          description="The TaskFlow dashboard brings your whole project into a single, beautiful surface — boards, people, analytics, and history."
+          description="The TeamlyFy dashboard brings your whole project into a single, beautiful surface — boards, people, analytics, and history."
         />
 
         <Reveal delay={0.1} y={40}>
@@ -88,10 +88,10 @@ export function ProductShowcase() {
                     <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e]/70" />
                   </div>
                   <div className="mx-auto flex w-full max-w-sm items-center gap-2 rounded-full bg-[color-mix(in_srgb,var(--bg)_60%,transparent)] px-3.5 py-1.5">
-                    <span className="flex h-3 w-3 items-center justify-center rounded-full" style={{ background: 'linear-gradient(135deg,#8b5cf6,#a855f7)' }}>
-                      <Kanban className="h-2 w-2 text-white" strokeWidth={3} />
+                    <span className="flex h-3 w-3 items-center justify-center rounded-full" style={{ background: 'var(--grad-accent)' }}>
+                      <Kanban className="h-2 w-2 text-on-accent" strokeWidth={3} />
                     </span>
-                    <span className="text-[10px] font-medium text-faint">taskflow.app/acme/product-launch</span>
+                    <span className="text-[10px] font-medium text-faint">teamlyfy.app/acme/product-launch</span>
                   </div>
                   <div className="flex items-center gap-2 text-faint">
                     <Search className="h-3.5 w-3.5" />
@@ -104,10 +104,10 @@ export function ProductShowcase() {
                   {/* ── sidebar ── */}
                   <div className="hidden w-44 shrink-0 flex-col border-r border-edge p-3 md:flex">
                     <div className="mb-4 flex items-center gap-2 px-1.5">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-lg" style={{ background: 'linear-gradient(135deg,#8b5cf6,#a855f7)' }}>
-                        <Kanban className="h-3 w-3 text-white" strokeWidth={2.6} />
+                      <span className="flex h-6 w-6 items-center justify-center rounded-lg" style={{ background: 'var(--grad-accent)' }}>
+                        <Kanban className="h-3 w-3 text-on-accent" strokeWidth={2.6} />
                       </span>
-                      <span className="text-[11px] font-extrabold tracking-tight text-ink">TaskFlow</span>
+                      <span className="text-[11px] font-extrabold tracking-tight text-ink">TeamlyFy</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       {[

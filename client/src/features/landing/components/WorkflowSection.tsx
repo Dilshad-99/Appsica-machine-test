@@ -45,9 +45,9 @@ function DesktopNode({
   const shadow = useTransform(
     glow,
     (v) =>
-      `0 0 0 1px rgba(139,92,246,${0.12 + v * 0.4}), 0 0 ${18 + v * 34}px ${
-        4 + v * 10
-      }px rgba(139,92,246,${0.08 + v * 0.22})`
+      `0 0 0 1px color-mix(in srgb, var(--accent) ${18 + v * 40}%, transparent), 0 8px ${
+        20 + v * 20
+      }px -4px var(--glow)`
   );
 
   return (
@@ -68,10 +68,10 @@ function DesktopNode({
         )}
       </motion.div>
       <div className="mt-5 text-center">
-        <p className="text-[15px] font-bold tracking-tight text-white">
+        <p className="text-[15px] font-bold tracking-tight text-ink">
           {stage.title}
         </p>
-        <p className="mt-1 text-[11.5px] font-medium text-white/45">
+        <p className="mt-1 text-[11.5px] font-medium text-mute">
           {stage.caption}
         </p>
       </div>
@@ -83,7 +83,7 @@ function Chevron({ x, progress }: { x: number; progress: MotionValue<number> }) 
   const opacity = useTransform(progress, [x - 0.02, x], [0, 1]);
   return (
     <motion.span style={{ left: `${x * 100}%`, opacity }} className="absolute top-7 -translate-x-1/2">
-      <ChevronRight className="h-4 w-4 text-white/60" />
+      <ChevronRight className="h-4 w-4 text-faint" />
     </motion.span>
   );
 }
@@ -100,16 +100,16 @@ function DesktopLine({ progress }: { progress: MotionValue<number> }) {
         preserveAspectRatio="none"
         fill="none"
       >
-        <line x1="50" y1="4" x2="950" y2="4" stroke="rgba(255,255,255,0.09)" strokeWidth="2" />
+        <line x1="50" y1="4" x2="950" y2="4" stroke="var(--border)" strokeWidth="2" />
         <line
           x1="50"
           y1="4"
           x2="950"
           y2="4"
-          stroke="rgba(139,92,246,0.55)"
+          stroke="var(--accent)"
           strokeWidth="2"
           strokeLinecap="round"
-          className="lp-flow-dash"
+          className="lp-flow-dash opacity-75"
         />
         <motion.path
           d="M 50 4 L 950 4"
@@ -120,8 +120,8 @@ function DesktopLine({ progress }: { progress: MotionValue<number> }) {
         />
         <defs>
           <linearGradient id="flowGrad" x1="0" y1="0" x2="100%" y2="0">
-            <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#a855f7" />
+            <stop offset="0%" stopColor="#D9AF32" />
+            <stop offset="100%" stopColor="#EAB308" />
           </linearGradient>
         </defs>
       </svg>
@@ -134,12 +134,12 @@ function DesktopLine({ progress }: { progress: MotionValue<number> }) {
         style={{ left: cometX, opacity: cometOpacity }}
         className="absolute top-[26px] -translate-x-1/2"
       >
-        <span className="block h-3 w-3 rounded-full bg-[#a855f7]" />
+        <span className="block h-3 w-3 rounded-full bg-accent shadow-sm" />
         <span
           className="absolute inset-0 -z-10 rounded-full"
           style={{
             background:
-              'radial-gradient(circle, rgba(168,85,247,0.55), transparent 70%)',
+              'radial-gradient(circle, var(--glow), transparent 70%)',
             filter: 'blur(6px)',
             transform: 'scale(2.6)',
           }}
@@ -160,15 +160,14 @@ export function WorkflowSection() {
     <section
       id="workflow"
       ref={ref}
-      className="relative overflow-hidden py-28 lg:py-36"
-      style={{ background: 'color-mix(in srgb, #05050a 88%, var(--bg))' }}
+      className="relative overflow-hidden py-28 lg:py-36 bg-[var(--surface,#FFFFFF)] border-b border-edge"
     >
-      {/* cinematic backdrop */}
+      {/* subtle ambient gold glow */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(900px 460px at 50% -10%, rgba(139,92,246,0.14), transparent 60%), radial-gradient(700px 380px at 90% 110%, rgba(168,85,247,0.1), transparent 60%), radial-gradient(600px 320px at 5% 90%, rgba(139,92,246,0.07), transparent 60%)',
+            'radial-gradient(900px 460px at 50% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%), radial-gradient(700px 380px at 90% 110%, color-mix(in srgb, var(--accent-2) 8%, transparent), transparent 60%)',
         }}
       />
       <div className="lp-noise" />
@@ -212,8 +211,8 @@ export function WorkflowSection() {
                       <s.icon className="h-6 w-6" style={{ color: 'var(--accent)' }} />
                     </motion.div>
                     <div className="text-center">
-                      <p className="text-[15px] font-bold tracking-tight text-white">{s.title}</p>
-                      <p className="mt-1 text-[11.5px] font-medium text-white/45">{s.caption}</p>
+                      <p className="text-[15px] font-bold tracking-tight text-ink">{s.title}</p>
+                      <p className="mt-1 text-[11.5px] font-medium text-mute">{s.caption}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -226,7 +225,7 @@ export function WorkflowSection() {
                     className="-my-6 flex justify-center"
                   >
                     <ArrowDown
-                      className="h-4 w-4 text-white/40"
+                      className="h-4 w-4 text-faint"
                       style={{ animation: 'lp-float 2.4s ease-in-out infinite' }}
                     />
                   </motion.span>

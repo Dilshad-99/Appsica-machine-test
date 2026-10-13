@@ -147,7 +147,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
           ) : (
             <h3
               onDoubleClick={() => setIsEditingTitle(true)}
-              className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white truncate cursor-pointer hover:text-purple-300 transition-colors"
+              className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-ink truncate cursor-pointer hover:text-accent transition-colors"
               title="Double click to rename"
             >
               {column.name}
@@ -159,14 +159,14 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
 
         <div className="flex items-center space-x-1">
           {/* Column Drag Handle */}
-          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-1 text-slate-300 hover:text-white">
-            <GripVertical className="column-grip w-4 h-4 text-slate-300" />
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-1 text-mute hover:text-ink">
+            <GripVertical className="column-grip w-4 h-4 text-mute" />
           </div>
 
           <button
             type="button"
             onClick={() => setIsEditingTitle(!isEditingTitle)}
-            className="icon-btn w-7 h-7 text-slate-300 hover:text-white"
+            className="icon-btn w-7 h-7 text-mute hover:text-ink"
             title="Rename Column"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -176,7 +176,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
             type="button"
             onClick={handleDeleteColumn}
             disabled={isRemoving}
-            className="icon-btn w-7 h-7 text-slate-300 hover:text-rose-400"
+            className="icon-btn w-7 h-7 text-mute hover:text-rose-500"
             title="Delete Column"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -185,7 +185,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
           <button
             type="button"
             onClick={() => setIsAdding(true)}
-            className="icon-btn w-7 h-7 text-slate-300 hover:text-white"
+            className="icon-btn w-7 h-7 text-mute hover:text-ink"
             title="Add Task"
           >
             <Plus className="w-4 h-4" />

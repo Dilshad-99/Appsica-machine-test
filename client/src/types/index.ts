@@ -51,7 +51,7 @@ export interface AppNotification {
   _id: string;
   recipient: string;
   sender: User;
-  type: 'BOARD_INVITATION' | 'TASK_MENTION';
+  type: 'BOARD_INVITATION' | 'TASK_MENTION' | 'TASK_ASSIGNED';
   title: string;
   message: string;
   board?: Board;
@@ -114,6 +114,7 @@ export interface BoardFilterState {
   searchQuery: string;
   priorityFilter: 'all' | 'low' | 'medium' | 'high' | 'critical';
   assigneeFilter: string; // 'all' | userId
+  dueDateFilter: 'all' | 'overdue' | 'today' | 'week';
   activeTaskId: string | null;
   isActivityOpen: boolean;
   isAnalyticsOpen: boolean;

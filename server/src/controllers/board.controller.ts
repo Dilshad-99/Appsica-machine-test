@@ -188,6 +188,7 @@ export const getWorkspaceMembers = asyncHandler(async (req: Request, res: Respon
       role: "Admin" | "Member";
       boards: string[];
       boardIds: string[];
+      inviteStatus?: "active" | "pending";
     }
   >();
 
@@ -214,6 +215,7 @@ export const getWorkspaceMembers = asyncHandler(async (req: Request, res: Respon
           role: isOwnerAdmin ? "Admin" : "Member",
           boards: [boardTitle],
           boardIds: [boardId],
+          inviteStatus: "active",
         });
       }
     }
@@ -238,11 +240,54 @@ export const getWorkspaceMembers = asyncHandler(async (req: Request, res: Respon
             role: isMemberAdmin ? "Admin" : "Member",
             boards: [boardTitle],
             boardIds: [boardId],
+            inviteStatus: "active",
           });
         }
       });
     }
   });
+
+  // Include pending email invitations so invited-but-not-yet-joined users appear
+  const boardIds = boards.map((b) => b._id);
+  if (boardIds.length > 0) {
+    const pendingInvites = await Invitation.find({
+      board: { $in: boardIds as any },
+      status: "pending",
+    })
+      .populate("invitee", "name email avatar")
+      .populate("board", "name title");
+
+    for (const inv of pendingInvites) {
+      const invitedBoardId = String((inv.board as any)?._id || "");
+      const invitedBoardTitle =
+        String((inv.board as any)?.name || (inv.board as any)?.title || "Project");
+      const invitee: any = inv.invitee;
+      const inviteeEmail = (invitee?.email || inv.inviteeEmail || "").toLowerCase();
+
+      // If the invitee is already an active member, just attach the board to them
+      const existingKey = invitee?._id && memberMap.has(String(invitee._id))
+        ? String(invitee._id)
+        : null;
+      const key = existingKey || `pending:${inviteeEmail}`;
+
+      if (memberMap.has(key)) {
+        const existing = memberMap.get(key)!;
+        if (!existing.boards.includes(invitedBoardTitle)) existing.boards.push(invitedBoardTitle);
+        if (!existing.boardIds.includes(invitedBoardId)) existing.boardIds.push(invitedBoardId);
+      } else {
+        memberMap.set(key, {
+          _id: key,
+          name: invitee?.name || inviteeEmail.split("@")[0] || "Invited Member",
+          email: inviteeEmail,
+          avatar: invitee?.avatar,
+          role: "Member",
+          boards: [invitedBoardTitle],
+          boardIds: [invitedBoardId],
+          inviteStatus: "pending",
+        });
+      }
+    }
+  }
 
   const memberList = Array.from(memberMap.values());
   res.json(new ApiResponse(200, "Workspace members fetched", memberList));

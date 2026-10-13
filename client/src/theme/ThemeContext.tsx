@@ -6,9 +6,14 @@ import {
   type ReactNode,
 } from "react";
 
-export type ThemeId = "obsidian" | "midnight" | "forest" | "rose";
+export type ThemeId = "gold" | "obsidian" | "midnight" | "forest" | "rose";
 
 export const THEMES: { id: ThemeId; name: string; swatch: string[] }[] = [
+  {
+    id: "gold",
+    name: "Prestige Gold",
+    swatch: ["#F5F6F8", "#FFFFFF", "#D9AF32"],
+  },
   {
     id: "obsidian",
     name: "Obsidian",
@@ -28,7 +33,7 @@ export const THEMES: { id: ThemeId; name: string; swatch: string[] }[] = [
 ];
 
 const STORAGE_KEY = "taskflow-theme";
-const DEFAULT_THEME: ThemeId = "obsidian";
+const DEFAULT_THEME: ThemeId = "gold";
 
 interface ThemeContextValue {
   theme: ThemeId;

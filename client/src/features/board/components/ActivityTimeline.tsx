@@ -23,16 +23,17 @@ export const ActivityTimeline: React.FC<ActivityTimelineProps> = ({
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", damping: 25, stiffness: 200 }}
-      className="fixed top-16 right-0 w-full sm:w-96 max-w-full h-[calc(100vh-4rem)] bg-slate-900/95 backdrop-blur-xl border-l border-slate-800 shadow-2xl z-40 flex flex-col"
+      className="fixed top-16 right-0 w-full sm:w-96 max-w-full h-[calc(100vh-4rem)] bg-card border-l border-edge shadow-2xl z-40 flex flex-col text-ink"
     >
-      <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="p-4 border-b border-edge flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <ActivityIcon className="w-5 h-5 text-indigo-400" />
-          <h3 className="text-base font-bold text-white">Board Activity</h3>
+          <ActivityIcon className="w-5 h-5 text-accent" />
+          <h3 className="text-base font-bold text-ink">Board Activity</h3>
         </div>
         <button
           onClick={() => dispatch(toggleActivityDrawer(false))}
-          className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+          className="icon-btn"
+          aria-label="Close activity drawer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -44,25 +45,25 @@ export const ActivityTimeline: React.FC<ActivityTimelineProps> = ({
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="h-16 rounded-xl bg-slate-800/50 animate-pulse"
+                className="h-16 rounded-xl bg-surface animate-pulse"
               />
             ))}
           </div>
         ) : activities.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-sm">
+          <div className="text-center py-12 text-mute text-sm">
             No activity recorded yet for this board.
           </div>
         ) : (
           activities.map((item) => (
             <div
               key={item._id}
-              className="glass-card rounded-xl p-3 border border-slate-800/60 text-xs"
+              className="glass-card rounded-xl p-3 border border-edge text-xs bg-surface"
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-semibold text-indigo-300">
+                <span className="font-semibold text-accent">
                   {item.user?.name || "User"}
                 </span>
-                <span className="text-[10px] text-slate-500 flex items-center space-x-1">
+                <span className="text-[10px] text-faint flex items-center space-x-1">
                   <Clock className="w-3 h-3" />
                   <span>
                     {new Date(item.createdAt).toLocaleTimeString([], {
@@ -72,7 +73,7 @@ export const ActivityTimeline: React.FC<ActivityTimelineProps> = ({
                   </span>
                 </span>
               </div>
-              <p className="text-slate-300">{item.message || item.details}</p>
+              <p className="text-mute">{item.message || item.details}</p>
             </div>
           ))
         )}

@@ -6,6 +6,7 @@ const initialState: BoardFilterState = {
   searchQuery: "",
   priorityFilter: "all",
   assigneeFilter: "all",
+  dueDateFilter: "all",
   activeTaskId: null,
   isActivityOpen: false,
   isAnalyticsOpen: false,
@@ -31,6 +32,12 @@ const boardSlice = createSlice({
     setAssigneeFilter: (state, action: PayloadAction<string>) => {
       state.assigneeFilter = action.payload;
     },
+    setDueDateFilter: (
+      state,
+      action: PayloadAction<BoardFilterState["dueDateFilter"]>,
+    ) => {
+      state.dueDateFilter = action.payload;
+    },
     setActiveTaskId: (state, action: PayloadAction<string | null>) => {
       state.activeTaskId = action.payload;
     },
@@ -52,6 +59,7 @@ const boardSlice = createSlice({
       state.searchQuery = "";
       state.priorityFilter = "all";
       state.assigneeFilter = "all";
+      state.dueDateFilter = "all";
     },
   },
 });
@@ -61,6 +69,7 @@ export const {
   setSearchQuery,
   setPriorityFilter,
   setAssigneeFilter,
+  setDueDateFilter,
   setActiveTaskId,
   toggleActivityDrawer,
   toggleAnalyticsModal,
