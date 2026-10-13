@@ -51,8 +51,26 @@ export const RegisterPage: React.FC = () => {
     e.preventDefault();
     setErrorMsg('');
 
+    const cleanName = name.trim();
+    const cleanEmail = email.trim();
+
+    if (!cleanName || cleanName.length < 2) {
+      setErrorMsg('Full name must be at least 2 characters.');
+      return;
+    }
+
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      setErrorMsg('Password must be at least 6 characters.');
+      return;
+    }
+
     try {
-      const res = await registerUser({ name, email, password }).unwrap();
+      const res = await registerUser({ name: cleanName, email: cleanEmail, password }).unwrap();
       dispatch(setCredentials({ user: res.data.user, token: res.data.token }));
 
       if (inviteCodeParam) {
@@ -63,7 +81,13 @@ export const RegisterPage: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
-      setErrorMsg(err.data?.message || 'Registration failed. Try a different email.');
+      const serverMsg =
+        err.data?.errors?.[0]?.message ||
+        err.data?.message ||
+        (err.status === 'FETCH_ERROR'
+          ? 'Unable to connect to server. Please ensure the backend server is running.'
+          : 'Registration failed. Try a different email.');
+      setErrorMsg(serverMsg);
     }
   };
 

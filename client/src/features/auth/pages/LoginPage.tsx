@@ -66,7 +66,13 @@ export const LoginPage: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
-      setErrorMsg(err.data?.message || 'Login failed. Please check credentials.');
+      const serverMsg =
+        err.data?.errors?.[0]?.message ||
+        err.data?.message ||
+        (err.status === 'FETCH_ERROR'
+          ? 'Unable to connect to server. Please ensure the backend server is running.'
+          : 'Login failed. Please check credentials.');
+      setErrorMsg(serverMsg);
     }
   };
 

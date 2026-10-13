@@ -17,6 +17,7 @@ const sanitizeUser = (user: {
   email: string;
   avatar?: string;
 }) => ({
+  _id: String(user._id),
   id: String(user._id),
   name: user.name,
   email: user.email,
@@ -30,12 +31,13 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     password: string;
   };
 
-  const existing = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
+  const existing = await User.findOne({ email: normalizedEmail });
   if (existing) {
     throw new ApiError(409, "A user with this email already exists");
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name: name.trim(), email: normalizedEmail, password });
   const token = signToken(String(user._id));
 
   res.status(201).json(
@@ -52,7 +54,8 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     password: string;
   };
 
-  const user = await User.findOne({ email }).select("+password");
+  const normalizedEmail = email.trim().toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail }).select("+password");
   if (!user || !(await user.comparePassword(password))) {
     throw new ApiError(401, "Invalid email or password");
   }
