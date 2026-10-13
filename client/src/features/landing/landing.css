@@ -1,0 +1,322 @@
+/* ═══════════════════════════════════════════════════════════════
+   TASKFLOW LANDING — premium presentation layer
+   Resolves against the existing theme token system (obsidian etc.)
+   ═══════════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ————— Typography ————— */
+.lp-hero-title {
+  font-size: clamp(2.1rem, 6vw, 4.6rem);
+  line-height: 0.99;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+.lp-section-title {
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.lp-feature-title {
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.lp-stat-num {
+  font-size: clamp(3.1rem, 7.5vw, 6.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-price-num {
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+.lp-text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    #c4b5fd 0%,
+    var(--accent) 48%,
+    #a855f7 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ————— Eyebrows ————— */
+.lp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.lp-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 70%, transparent)
+  );
+}
+
+.lp-eyebrow-center {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.lp-eyebrow-center::before,
+.lp-eyebrow-center::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 65%, transparent)
+  );
+}
+.lp-eyebrow-center::after {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 65%, transparent),
+    transparent
+  );
+}
+
+/* ————— Surfaces ————— */
+.lp-glass {
+  background: color-mix(in srgb, var(--card) 66%, transparent);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-md);
+}
+
+.lp-glass-deep {
+  background: linear-gradient(
+    168deg,
+    color-mix(in srgb, var(--card-hover) 40%, transparent),
+    color-mix(in srgb, var(--card) 72%, transparent)
+  );
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-lg);
+}
+
+.lp-hairline {
+  border: 1px solid var(--border);
+}
+
+/* ————— Background layers ————— */
+.lp-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.lp-grid-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--text-1) 3.5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--text-1) 3.5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 76px 76px;
+  mask-image: radial-gradient(
+    ellipse 90% 70% at 50% 0%,
+    black 35%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 90% 70% at 50% 0%,
+    black 35%,
+    transparent 100%
+  );
+}
+
+.lp-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ————— Hero kanban preview ————— */
+.lp-kb-board {
+  transform-style: preserve-3d;
+}
+
+.lp-kb-col {
+  border-top: 2px solid var(--col, var(--accent));
+  position: relative;
+}
+
+.lp-kb-card {
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card-hover) 80%, var(--bg));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.lp-kb-card-drag {
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-radius: 14px;
+}
+
+@keyframes lp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+.lp-float {
+  animation: lp-float 6s ease-in-out infinite;
+}
+
+@keyframes lp-float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-1.2deg);
+  }
+}
+.lp-float-slow {
+  animation: lp-float-slow 9s ease-in-out infinite;
+}
+
+@keyframes lp-ping {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.65;
+  }
+  80%,
+  100% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+}
+.lp-ping {
+  animation: lp-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ————— Workflow section ————— */
+.lp-flow-dash {
+  stroke-dasharray: 5 12;
+  animation: lp-dash 1.2s linear infinite;
+}
+@keyframes lp-dash {
+  to {
+    stroke-dashoffset: -34;
+  }
+}
+
+/* ————— Scroll cue ————— */
+@keyframes lp-scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+.lp-scroll-cue {
+  animation: lp-scroll-cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* ————— Misc ————— */
+.lp-avatar-ring {
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.lp-browser {
+  border-radius: 22px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.lp-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--accent) 80%, var(--text-1));
+  transition: gap 0.25s ease, color 0.25s ease;
+}
+.lp-link-arrow:hover {
+  gap: 13px;
+  color: var(--accent);
+}
+
+.lp-mask-fade-x {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-float,
+  .lp-float-slow,
+  .lp-ping,
+  .lp-flow-dash,
+  .lp-scroll-cue {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
