@@ -211,6 +211,22 @@ export const useSocketEvents = (boardId: string | undefined) => {
       );
     };
 
+    const handleCommentUpdated = (payload: { taskId: string }) => {
+      dispatch(commentApi.util.invalidateTags([{ type: 'Comment', id: payload.taskId }]));
+    };
+
+    const handleCommentDeleted = (payload: { taskId: string }) => {
+      dispatch(commentApi.util.invalidateTags([{ type: 'Comment', id: payload.taskId }]));
+      dispatch(
+        taskApi.util.updateQueryData('getBoardTasks', boardId, (draft) => {
+          const task = draft.data.find((t: Task) => t._id === payload.taskId);
+          if (task && typeof task.commentCount === 'number' && task.commentCount > 0) {
+            task.commentCount -= 1;
+          }
+        })
+      );
+    };
+
     // 6. Online Members (Presence)
     const handleUserJoined = (user: { userId: string; userName: string }) => {
       setOnlineMembers((prev) => Array.from(new Set([...prev, user.userId])));
@@ -283,6 +299,8 @@ export const useSocketEvents = (boardId: string | undefined) => {
     socket.on('task:updated', handleTaskUpdated);
     socket.on('task:deleted', handleTaskDeleted);
     socket.on('comment:created', handleCommentCreated);
+    socket.on('comment:updated', handleCommentUpdated);
+    socket.on('comment:deleted', handleCommentDeleted);
     socket.on('board:user-joined', handleUserJoined);
     socket.on('board:user-left', handleUserLeft);
     socket.on('presence:update', handlePresenceUpdate);
@@ -301,6 +319,8 @@ export const useSocketEvents = (boardId: string | undefined) => {
       socket.off('task:updated', handleTaskUpdated);
       socket.off('task:deleted', handleTaskDeleted);
       socket.off('comment:created', handleCommentCreated);
+      socket.off('comment:updated', handleCommentUpdated);
+      socket.off('comment:deleted', handleCommentDeleted);
       socket.off('board:user-joined', handleUserJoined);
       socket.off('board:user-left', handleUserLeft);
       socket.off('presence:update', handlePresenceUpdate);

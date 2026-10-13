@@ -97,6 +97,15 @@ export const updateComment = asyncHandler(async (req: Request, res: Response) =>
   await comment.save();
   await comment.populate("author", "name email avatar");
 
+  const task = await Task.findById(comment.task);
+  if (task) {
+    io.to(`board:${String(task.board)}`).emit("comment:updated", {
+      boardId: String(task.board),
+      taskId: String(comment.task),
+      comment: formatComment(comment),
+    });
+  }
+
   res.json(new ApiResponse(200, "Comment updated", formatComment(comment)));
 });
 
@@ -105,11 +114,39 @@ export const deleteComment = asyncHandler(async (req: Request, res: Response) =>
 
   const comment = await Comment.findById(commentId);
   if (!comment) throw new ApiError(404, "Comment not found");
-  if (idOf(comment.author) !== uid(req)) {
-    throw new ApiError(403, "You can only delete your own comments");
+
+  const task = await Task.findById(comment.task);
+  const board = task ? await Board.findById(task.board) : null;
+
+  const currentUserId = uid(req);
+  const isAuthor = idOf(comment.author) === currentUserId;
+  const isBoardOwner = board ? idOf(board.owner) === currentUserId : false;
+
+  if (!isAuthor && !isBoardOwner) {
+    throw new ApiError(403, "You can only delete your own comments or comments on boards you own");
   }
+
+  const taskId = String(comment.task);
+  const boardId = task ? String(task.board) : undefined;
 
   await comment.deleteOne();
 
-  res.json(new ApiResponse(200, "Comment deleted", null));
+  if (boardId && task) {
+    await ActivityService.log(
+      req.user!._id,
+      task.board,
+      "COMMENT_DELETED",
+      `deleted a comment on task "${task.title}"`,
+      { taskId, commentId },
+      taskId
+    );
+
+    io.to(`board:${boardId}`).emit("comment:deleted", {
+      boardId,
+      taskId,
+      commentId,
+    });
+  }
+
+  res.json(new ApiResponse(200, "Comment deleted", { commentId, taskId }));
 });
